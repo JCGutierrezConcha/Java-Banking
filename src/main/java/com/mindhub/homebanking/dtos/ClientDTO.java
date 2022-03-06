@@ -27,7 +27,6 @@ public class ClientDTO {
 
     }
 
-
     public Long getId() {
         return id;
     }
