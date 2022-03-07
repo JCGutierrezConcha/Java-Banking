@@ -18,6 +18,9 @@ public class Client {
     private String lastName;
     private String email;
 
+    @OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    Set<Account> accounts = new HashSet<>();
+
     public Client() {
     }
 
@@ -64,12 +67,8 @@ public class Client {
         return accounts;
     }
 
-    public void setAccounts(Set<Account> accounts) {
-        this.accounts = accounts;
+    public void setAccounts(Set<Account> accounts) {this.accounts = accounts;
     }
-
-    @OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-    Set<Account> accounts = new HashSet<>();
 
     public void addAccount(Account account) {
         account.setClient(this);

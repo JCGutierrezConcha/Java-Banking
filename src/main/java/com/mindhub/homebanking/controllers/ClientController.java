@@ -9,7 +9,7 @@ import com.mindhub.homebanking.repositories.ClientRepository;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
 
-@RestController
+@RestController()
 public class ClientController {
 
     @Autowired
