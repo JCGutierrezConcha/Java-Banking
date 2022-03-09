@@ -1,10 +1,12 @@
 package com.mindhub.homebanking.models;
 
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+
+import static java.util.stream.Collectors.toList;
 
 
 @Entity
@@ -18,8 +20,11 @@ public class Client {
     private String lastName;
     private String email;
 
-    @OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
     Set<Account> accounts = new HashSet<>();
+
+    @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+    Set<ClientLoan> loans = new HashSet<>();
 
     public Client() {
     }
@@ -67,14 +72,27 @@ public class Client {
         return accounts;
     }
 
-    public void setAccounts(Set<Account> accounts) {this.accounts = accounts;
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
     }
 
-    public void addAccount(Account account) {
+    public void addAccount(Account account){
         account.setClient(this);
         accounts.add(account);
     }
 
+    public Set<ClientLoan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(Set<ClientLoan> loans) {
+        this.loans = loans;
+    }
+
+    public void addClientLoan(ClientLoan clientLoan){
+        clientLoan.setClient(this);
+        loans.add(clientLoan);
+    }
 }
 
 
