@@ -3,15 +3,21 @@ package com.mindhub.homebanking;
 
 import com.mindhub.homebanking.models.*;
 import com.mindhub.homebanking.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @SpringBootApplication
 public class HomebankingApplication {
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(HomebankingApplication.class, args);
@@ -25,8 +31,8 @@ public class HomebankingApplication {
 		                          ClientLoanRepository clientloanRepository,
 								  CardRepository cardRepository) {
 		return ( args ) ->{
-			Client cliente1 = new Client("Melba", "Morel", "melba@mindhub.com");
-			Client cliente2 = new Client("Raquel", "Concha", "rconcha@mail.com");
+			Client cliente1 = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("pass_melba"));
+			Client cliente2 = new Client("Raquel", "Concha", "rconcha@mail.com", passwordEncoder.encode("pass_raquel"));
 
 			clientRepository.save(cliente1);
 			clientRepository.save(cliente2);
@@ -76,10 +82,13 @@ public class HomebankingApplication {
 			Card card1 = new Card(cliente1.getFirstName() + " " + cliente1.getLastName(), CardType.DEBIT, CardColor.GOLD, "2771 1418 2534 1415", 322, LocalDateTime.now(), LocalDateTime.now().plusYears(5), cliente1);
 			Card card2 = new Card(cliente1.getFirstName() + " " + cliente1.getLastName(), CardType.CREDIT, CardColor.TITANIUM, "2233 6578 1478 3122", 785, LocalDateTime.now(), LocalDateTime.now().plusYears(5), cliente1);
 			Card card3 = new Card(cliente2.getFirstName() + " " + cliente2.getLastName(), CardType.CREDIT, CardColor.SILVER, "7766 2455 2732 2322", 691, LocalDateTime.now(), LocalDateTime.now().plusYears(5), cliente2);
+			Card card4 = new Card(cliente2.getFirstName() + " " + cliente2.getLastName(), CardType.DEBIT, CardColor.GOLD, "88766 4557 2931 4578", 543, LocalDateTime.now(), LocalDateTime.now().plusYears(5), cliente2);
 
 			cardRepository.save(card1);
 			cardRepository.save(card2);
 			cardRepository.save(card3);
+			cardRepository.save(card4);
+
 
 		};
 	}
